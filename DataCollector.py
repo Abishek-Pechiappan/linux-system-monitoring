@@ -1,5 +1,4 @@
 import os 
-import time
 import datetime 
 
 def main():
@@ -27,10 +26,9 @@ def main():
                 if any(path in cmd for path in suspious_paths) and status == "ROOT":
                     print("Malware Found")
                     with open("log.txt", "a") as log:
-                        timestamp = str(datetime.datetime.now())
-                        log.write(timestamp)
-                        log.write(f"PID: {pid} | {comm} | {status} \n")
-
+                        timestamp = str(datetime.datetime.now())   #Changes the Time and Date to strings
+                        log.write(timestamp)                        # Writes the date and time in file 
+                        log.write(f"PID: {pid} | {comm} | {status} \n")   #Logs the data if there malware is found
         except FileNotFoundError:
             print 
     print("Total Number Process:", len(pids))   
