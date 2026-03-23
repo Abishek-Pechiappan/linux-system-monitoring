@@ -23,7 +23,7 @@ def main():
             with open(path_cmdline) as pids_cmdline:
                 cmd = pids_cmdline.read().replace('\x00',' ').rstrip("\n")    #To make the content in the file visble as it's kernel level we use the .replace()
                 if any(path in cmd for path in suspious_paths) and status == "ROOT":
-                    print("Malware") 
+                    print("Malware Found") 
         except FileNotFoundError:
             print 
     print("Total Number Process:", len(pids))   
