@@ -5,6 +5,8 @@ def main():
     for pid in pids:
         path_comm = "/proc/" + pid + "/comm"    #Path for comm
         path_status = "/proc/" + pid + "/status"   #Path for status 
+        path_cmdline = "/proc/" + pid + "/cmdline"  #Path for checking where the commad was give from 
+        suspious_paths = ["/tmp", "/dev/shm", "/var/tem"]
         try:
             with open(path_comm) as pids_comm:   #Reading the comms file in /proc
                 comm = pids_comm.read().rstrip("\n")
@@ -17,7 +19,11 @@ def main():
                             status = "ROOT"
                         else:
                             status = "USER"
-                        print("PID: ",pid,"|",comm,"|",status)  #Printing in single line
+                        print("PID: ",pid,"|",comm,"|",status)  #Printing in single line 
+            with open(path_cmdline) as pids_cmdline:
+                cmd = pids_cmdline.read().replace('\x00',' ').rstrip("\n")    #To make the content in the file visble as it's kernel level we use the .replace()
+                if any(path in cmd for path in suspious_paths) and status == "ROOT":
+                    print("Malware") 
         except FileNotFoundError:
             print 
     print("Total Number Process:", len(pids))   
