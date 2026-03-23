@@ -11,6 +11,8 @@ A Python-based security monitor that continuously checks all running processes o
 - Processes running as root (UID 0) from suspicious directories
 - Suspicious execution paths including /tmp, /dev/shm, /var/tmp
 - Displays PID, process name, and privilege level for every running process
+- Continuous monitoring with scans every 10 seconds
+- Logging detections to a file with timestamps
 
 **# How does it work?**
 
@@ -38,8 +40,6 @@ bash git clone https://github.com/Abishek-Pechiappan/linux-system-monitoring.git
 
 **# Future Improvements**
 
-- Continuous monitoring with scans every 10 seconds
-- Logging detections to a file with timestamps
 - Network connection monitoring via /proc/net/tcp
 - Auto start on system boot
 - Terminal dashboard UI
