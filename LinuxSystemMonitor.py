@@ -49,21 +49,20 @@ def network_monitor():
     3040,  # Ramen Worm
     4444,  # Metasploit default listener
     6667,  # IRC-based Botnet C2
-    31337, # Back Orifice / Elite Backdoors
+    31337, # Elite Backdoors
     33567, # Lion Worm rootshell
-    33568  # Lion Worm trojaned SSH 
-    ]   
+    33568]  # Lion Worm trojaned SSH    
     path_netowrk = "/proc/net/tcp"
-    with open(path_netowrk) as network:
-        next(network)
-        net = network.read()
-        for line in net.splitlines():
-            part = line.split()
+    with open(path_netowrk) as network:     #Open's the file path 
+        next(network)                       #Skips the first line as there is no data
+        net = network.read()                
+        for line in net.splitlines():           #Makes to lines
+            part = line.split()                 
             localhex = part[1].split(":")
-            localip = socket.inet_ntoa(bytes.fromhex(localhex[0])[::-1])
-            port = int(localhex[1], 16)
+            localip = socket.inet_ntoa(bytes.fromhex(localhex[0])[::-1])        #Converts the code to the IP as we have to change it from bytes to hex the also reverse it to get the IP 
+            port = int(localhex[1], 16)                                         #Change the port from Hex to normal
             if port in suspicious_ports:
-                with open("network_log.text", "a") as log:
+                with open("network_log.text", "a") as log:                      #Updates the file if there is an match
                     timestamp = str(datetime.datetime.now())
                     log.write(f"{timestamp} | ")
                     log.write(f" The IP {localip} is suspicious in the port {port} \n") 

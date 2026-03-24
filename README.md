@@ -13,6 +13,7 @@ A Python-based security monitor that continuously checks all running processes o
 - Displays PID, process name, and privilege level for every running process
 - Continuous monitoring with scans every 10 seconds
 - Logging detections to a file with timestamps
+- Network connection monitoring via /proc/net/tcp
 
 **# How does it work?**
 
@@ -21,6 +22,7 @@ Linux exposes all running process information through /proc — a virtual filesy
 - /proc/[pid]/comm — process name
 - /proc/[pid]/status — UID and privilege level
 - /proc/[pid]/cmdline — exact command and path that launched the process
+- /proc/net/tcp - Check for programs running on Unauthorized ports and Connecting to suspicious IP
 
 If a root process is found running from a suspicious path it flags it as potential malware.
 
@@ -28,7 +30,7 @@ If a root process is found running from a suspicious path it flags it as potenti
 
 bash git clone https://github.com/Abishek-Pechiappan/linux-system-monitoring.git
 **cd** linux-system-monitoring
-**python3** DataCollector.py
+**python3** LinuxSystemMonitor.py
 
 **# What I learned**
 
@@ -37,9 +39,9 @@ bash git clone https://github.com/Abishek-Pechiappan/linux-system-monitoring.git
 - How tools like btop++ and htop work under the hood
 - Process privilege levels and why root detection matters in security
 - Tested against a simulated malicious process running from /tmp
+- How to check for Unauthorized connection of and application
 
 **# Future Improvements**
 
-- Network connection monitoring via /proc/net/tcp
 - Auto start on system boot
 - Terminal dashboard UI
