@@ -1,5 +1,7 @@
 import os 
+import time
 import datetime 
+import socket
 
 def main():
     pids = [pid for pid in os.listdir("/proc") if pid.isdigit()]
@@ -33,6 +35,43 @@ def main():
             print 
     print("Total Number Process:", len(pids))   
 
-while True:
-    main()
-    time.sleep(10)
+def network_check():
+    suspicious_ports = [
+    21,    # FTP (Unencrypted data exfiltration)
+    22,    # SSH (Brute-force entry point)
+    23,    # Telnet (Botnet command & control)
+    511,   # T0rn Rootkit
+    666,   # Satanz Backdoor / Ripper
+    1008,  # Li0n Worm
+    1337,  # Common Reverse Shell port
+    1524,  # Trinoo DDoS tool / Ingres backdoor
+    2222,  # Alternate SSH (often used to hide SSH or by malware)
+    3040,  # Ramen Worm
+    4444,  # Metasploit default listener
+    6667,  # IRC-based Botnet C2
+    31337, # Back Orifice / Elite Backdoors
+    33567, # Lion Worm rootshell
+    33568  # Lion Worm trojaned SSH
+    ]   
+
+    path_netowrk = "/proc/net/tcp"
+    with open(path_netowrk) as network:
+        next(network)
+        net = network.read()
+        for line in net.splitlines():
+            part = line.split()
+            print(part)
+            localhex = part[1].split(":")
+            localip = socket.inet_ntoa(bytes.fromhex(localhex[0])[::-1])
+            port = int(localhex[1], 16)
+            if port in suspicious_ports:
+                print("This ", localip, "Using this sus port", port)
+
+
+
+ #while True:
+   # main()
+   # time.sleep(10)
+
+
+network_check()
