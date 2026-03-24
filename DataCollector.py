@@ -3,7 +3,7 @@ import time
 import datetime 
 import socket
 
-def main():
+def Process_monitor():
     pids = [pid for pid in os.listdir("/proc") if pid.isdigit()]
     for pid in pids:
         path_comm = "/proc/" + pid + "/comm"    #Path for comm
@@ -35,7 +35,7 @@ def main():
             print 
     print("Total Number Process:", len(pids))   
 
-def network_check():
+def network_monitor():
     suspicious_ports = [
     21,    # FTP (Unencrypted data exfiltration)
     22,    # SSH (Brute-force entry point)
@@ -51,27 +51,27 @@ def network_check():
     6667,  # IRC-based Botnet C2
     31337, # Back Orifice / Elite Backdoors
     33567, # Lion Worm rootshell
-    33568  # Lion Worm trojaned SSH
+    33568  # Lion Worm trojaned SSH 
     ]   
-
     path_netowrk = "/proc/net/tcp"
     with open(path_netowrk) as network:
         next(network)
         net = network.read()
         for line in net.splitlines():
             part = line.split()
-            print(part)
             localhex = part[1].split(":")
             localip = socket.inet_ntoa(bytes.fromhex(localhex[0])[::-1])
             port = int(localhex[1], 16)
             if port in suspicious_ports:
-                print("This ", localip, "Using this sus port", port)
+                with open("network_log.text", "a") as log:
+                    timestamp = str(datetime.datetime.now())
+                    log.write(f"{timestamp} | ")
+                    log.write(f" The IP {localip} is suspicious in the port {port} \n") 
 
+def main():
+    while True:
+        Process_monitor()
+        network_monitor()
+        time.sleep(10)
 
-
- #while True:
-   # main()
-   # time.sleep(10)
-
-
-network_check()
+main()
